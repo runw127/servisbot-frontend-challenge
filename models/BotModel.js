@@ -4,7 +4,6 @@ import Log from './LogModel.js';
 import Worker from './WorkerModel.js';
 
 const Bot = db.sequelize.define('Bot', {
-    // Immutable Required UUID
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4, // Automatically generates a UUID
@@ -12,27 +11,23 @@ const Bot = db.sequelize.define('Bot', {
         primaryKey: true,
     },
 
-    // Mutable Required String
     name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 
-    // Mutable Optional String
     description: {
         type: DataTypes.STRING, // Optional by default
     },
 
-    // Mutable Required String Enum
     status: {
-        type: DataTypes.ENUM('DISABLED', 'ENABLED', 'PAUSED'), // Define allowed values
+        type: DataTypes.ENUM('DISABLED', 'ENABLED', 'PAUSED'),
         allowNull: false,
         defaultValue: 'DISABLED',
     },
 
-    // Immutable Required Epoch Timestamp
     created: {
-        type: DataTypes.BIGINT, // Store epoch timestamp as a big integer
+        type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: () => Date.now(), // Automatically set to the current timestamp
     },
