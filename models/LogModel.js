@@ -1,9 +1,7 @@
 import { DataTypes } from 'sequelize';
 import db from './index.js';
-import Bot from './BotModel.js';
 
 const Log = db.sequelize.define('Log', {
-  // Immutable Required UUID
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -11,20 +9,18 @@ const Log = db.sequelize.define('Log', {
     primaryKey: true,
   },
 
-  // Immutable Required ISO Timestamp
   created: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: Date.now, // Automatically set the current timestamp
   },
 
-  // Mutable Required String
   message: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 
-  // Immutable Required UUID - references a unique bot
+  // foreigner key for bot, better to have called botId
   botId: {
     type: DataTypes.UUID,
     references: {
@@ -33,7 +29,7 @@ const Log = db.sequelize.define('Log', {
     },
   },
 
-  // Immutable Required UUID - references a unique worker
+  // foreigner key for work, better to have called workerId
   workerId: {
     type: DataTypes.UUID,
     references: {

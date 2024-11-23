@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import validator from 'validator';
 import Bot from '../models/BotModel.js';
 import Worker from '../models/WorkerModel.js';
+import Log from '../models/LogModel.js';
 
 // TODO: Need to move to ulti folder with test
 const { isUUID } = validator;
@@ -15,7 +16,6 @@ const findRelatedWorkersById = async (req, res) => {
     }
   
     try {
-      // Step 1: Find the worker and its associated bot
       const worker = await Worker.findOne({
         where: { id },
         include: {
@@ -24,26 +24,63 @@ const findRelatedWorkersById = async (req, res) => {
         },
       });
   
-      // If the worker is not found, return a 404 response
       if (!worker) {
         return res.status(404).json({ error: `Worker with ID ${id} not found.` });
       }
   
-      // Step 2: Query other workers related to the same bot
       const relatedWorkers = await Worker.findAll({
         where: {
-          botId: worker.botId, // Find workers with the same bot ID
-          id: { [Op.ne]: id }, // Exclude the current worker (not equal to the given ID)
+          botId: worker.botId,
+          id: { [Op.ne]: id },
         },
       });
-  
-      // Return the related workers
+
       return res.status(200).json(relatedWorkers);
     } catch (error) {
       console.error('Error fetching related workers:', error.message);
       return res.status(500).json({ error: 'An unexpected error occurred.' });
     }
 };
+
+const findLogsByWorkerWithBot = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const workerWithLogsAndBot = await Worker.findOne({
+            where: { id },
+            include: [
+                {
+                model: Log,
+                as: 'logs',
+                },
+                {
+                model: Bot, // Inlcude the associated bot as requested
+                as: 'bot',
+                },
+            ],
+        });
+
+        if (!workerWithLogsAndBot) {
+            return res.status(404).json({ error: `Worker with ID ${id} not found.` });
+        }
+
+        return res.status(200).json({
+            logs: workerWithLogsAndBot.logs,
+            worker: {
+                id: workerWithLogsAndBot.id,
+                name: workerWithLogsAndBot.name,
+                description: workerWithLogsAndBot.description,
+                botId: workerWithLogsAndBot.botId,
+                created: workerWithLogsAndBot.created,
+            },
+            bot: workerWithLogsAndBot.bot,
+        });
+
+    } catch (error) {
+        console.error('Error fetching logs for worker:', error.message);
+        return res.status(500).json({ error: 'An unexpected error occurred.' });
+    }
+}
   
 
-export default { findRelatedWorkersById };
+export default { findRelatedWorkersById, findLogsByWorkerWithBot }
