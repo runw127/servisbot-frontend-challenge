@@ -1,6 +1,7 @@
 import validator from 'validator';
 import Bot from '../models/BotModel.js';
 import Worker from '../models/WorkerModel.js';
+import Log from '../models/LogModel.js';
 
 // TODO: Need to move to ulti folder with test
 const { isUUID } = validator;
@@ -64,4 +65,33 @@ const findBotByIdWithItsWorkers = async (req, res) => {
     return res.status(200).json(bot);
 }
 
-export default { listAllBots, listAllBotsWithWorkers, findBotById, findBotByIdWithItsWorkers };
+const findBotByIdWithItsLogs = async (req, res) => {
+    const { id } =  req.params;
+
+    if (!isUUID(id)) {
+        return res.status(400).json({ error: 'Invalid UUID format.' });
+    }
+
+    const bot = await Bot.findOne({
+        where: { id },
+        include: {
+            model: Log,
+            as: 'logs',
+        },
+    });
+
+    if (!bot) {
+        console.log(`Bot with ID ${id} not found.`);
+    }
+
+    return res.status(200).json(bot);
+}
+
+
+export default {
+    listAllBots,
+    listAllBotsWithWorkers,
+    findBotById,
+    findBotByIdWithItsWorkers,
+    findBotByIdWithItsLogs,
+};
