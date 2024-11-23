@@ -12,7 +12,7 @@ const listAllBots = (req, res) => {
 }
 
 // query all bots with their workers(future use)
-const listAllBotsWithWorkers = (req, res) => {
+const listAllBotsWithWorkers = async (req, res) => {
     Bot.findAll({
         include: {
             model: Worker,
@@ -23,15 +23,14 @@ const listAllBotsWithWorkers = (req, res) => {
     });
 }
 
-const findBotById = (req, res) => {
+const findBotById = async (req, res) => {
     const { id } =  req.params;
 
-    // Validate the UUID format
     if (!isUUID(id)) {
         return res.status(400).json({ error: 'Invalid UUID format.' });
     }
 
-    const bot = Bot.findOne({
+    const bot = await Bot.findOne({
         where: { id },
     });
 
@@ -42,4 +41,27 @@ const findBotById = (req, res) => {
     return res.status(200).json(bot);
 }
 
-export default { listAllBots, listAllBotsWithWorkers, findBotById };
+// TODO: this might could merge with function findBotById.
+const findBotByIdWithItsWorkers = async (req, res) => {
+    const { id } =  req.params;
+
+    if (!isUUID(id)) {
+        return res.status(400).json({ error: 'Invalid UUID format.' });
+    }
+
+    const bot = await Bot.findOne({
+        where: { id },
+        include: { 
+            model: Worker, // Include Workers
+            as: 'workers', // Use the alias defined in the association
+        },
+    });
+
+    if (!bot) {
+        console.log(`Bot with ID ${id} not found.`);
+    }
+
+    return res.status(200).json(bot);
+}
+
+export default { listAllBots, listAllBotsWithWorkers, findBotById, findBotByIdWithItsWorkers };

@@ -72,3 +72,17 @@ Create an application that implements the following features
 
 There are no wireframes or design considerations specified.
 You are free to apply a UI/UX that delivers an intuitive application experience for the feature set above.
+
+## Enpoints At Glance
+
+### Bot related Enpoints:
+api/v1/bot/list
+api/v1/bot/list/:id
+api/v1/bot/list/:id/workers
+
+### Worker related Enpoints:
+api/v1/worker/:id/workers
+
+
+
+
