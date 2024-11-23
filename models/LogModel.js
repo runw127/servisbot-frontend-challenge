@@ -27,7 +27,6 @@ const Log = db.sequelize.define('Log', {
   // Immutable Required UUID - references a unique bot
   botId: {
     type: DataTypes.UUID,
-    allowNull: false,
     references: {
       model: 'Bots',
       key: 'id',
@@ -37,7 +36,6 @@ const Log = db.sequelize.define('Log', {
   // Immutable Required UUID - references a unique worker
   workerId: {
     type: DataTypes.UUID,
-    allowNull: false,
     references: {
       model: 'Workers',
       key: 'id',

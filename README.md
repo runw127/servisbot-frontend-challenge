@@ -79,6 +79,7 @@ You are free to apply a UI/UX that delivers an intuitive application experience 
 api/v1/bot/list
 api/v1/bot/list/:id
 api/v1/bot/list/:id/workers
+api/v1/bot/list/:id/logs
 
 ### Worker related Enpoints:
 api/v1/worker/:id/workers

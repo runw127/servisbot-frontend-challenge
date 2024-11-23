@@ -40,16 +40,6 @@ const Bot = db.sequelize.define('Bot', {
     timestamps: false, // Disable Sequelize's `createdAt` and `updatedAt` fields
 });
 
-// Hook to enforce immutability on `id` and `created`
-// Bot.beforeUpdate((instance) => {
-//     if (instance.changed('id')) {
-//         throw new Error('The UUID field "id" is immutable and cannot be updated.');
-//     }
-//     if (instance.changed('created')) {
-//         throw new Error('The "created" field is immutable and cannot be updated.');
-//     }
-// });
-
 Worker.belongsTo(Bot, {
     foreignKey: 'botId',
 as: 'bot',
