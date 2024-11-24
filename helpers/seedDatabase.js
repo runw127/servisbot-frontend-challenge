@@ -8,10 +8,10 @@ const seedDatabase = async () => {
         { name: 'Bot Two', description: 'Test Bot One', status: 'DISABLED' }
     ]);
     const workers = await Worker.bulkCreate([
-        { name: 'Worker One', botId: bot[0].id },
-        { name: 'Worker Two', botId: bot[0].id },
-        { name: 'Worker Three', botId: bot[1].id },
-        { name: 'Worker Four', botId: bot[1].id }
+        { name: 'Worker One', botId: bot[0].id, description: 'description test 1111' },
+        { name: 'Worker Two', botId: bot[0].id, description: 'description test 2222' },
+        { name: 'Worker Three', botId: bot[0].id, description: 'description test 3333' },
+        { name: 'Worker Four', botId: bot[1].id, description: 'description test 4444' }
     ]);
     await Log.bulkCreate([
         { message: 'Log for Bot One message 1', botId: bot[0].id, workerId: null },
