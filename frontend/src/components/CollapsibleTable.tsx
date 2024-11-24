@@ -38,7 +38,7 @@ const CollapsibleTable: React.FC = () => {
           <TableCell>{worker.id}</TableCell>
           <TableCell>{worker.name}</TableCell>
           <TableCell>{worker.description || 'No Description'}</TableCell>
-          <TableCell>{new Date(worker.created).toLocaleString()}</TableCell>
+          <TableCell>{new Date(Number(worker.created)).toLocaleString()}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell colSpan={6} style={{ padding: 0 }}>
