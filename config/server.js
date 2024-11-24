@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import cors from 'cors';
 import app from "../app.js";
 
 dotenv.config();
@@ -6,6 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT || 8080;
 
 app.set("port", PORT);
+app.use(cors());
 
 // test route
 app.get("/", (req, res) => {
